@@ -1,0 +1,40 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.Card {
+  margin: 0.2em;
+  width: 8rem;
+  height: 12rem;
+  background-color: aliceblue;
+  border-radius: 1rem;
+  display: flexbox;
+
+  .Number {
+    text-align: start;
+    font-size: 24px;
+    font-weight: bold;
+    color: #282c34;
+    margin: 0.2em 0 0 0.5em;
+  }
+  .suite {
+    font-size: 24px;
+    font-weight: bold;
+    color: #282c34;
+  }
+}
