@@ -19,7 +19,6 @@
 }
 
 .Card {
-  margin: 0.2em;
   width: 8rem;
   height: 12rem;
   background-color: aliceblue;
@@ -63,5 +62,13 @@
     align-content: center;
     justify-self: center;
     justify-content: center;
+  }
+}
+
+.Stock {
+  display: grid;
+  .Stack {
+    grid-row: 1/1;
+    grid-column: 1/1;
   }
 }

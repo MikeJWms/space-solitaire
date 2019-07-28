@@ -7,6 +7,7 @@ const assembleDeck = () => {
     for (let suite of ['spade', 'club', 'heart', 'diamond']) {
       for (let number = 1; number <= 13; number++) {
         let displayName = number
+        let faceDown = false;
         switch (number) {
           case 1:
             displayName = 'A'
@@ -17,15 +18,17 @@ const assembleDeck = () => {
           case 12:
             displayName = 'Q'
             break;
-          case 1:
+          case 13:
             displayName = 'K'
             break;
         }
+
         deck.push(
           {
             number: number,
             displayName: displayName,
-            suite: suite
+            suite: suite,
+            faceDown: faceDown
           }
         )
       }
@@ -42,23 +45,58 @@ const shuffle = (a) => {
   return a;
 }
 
+const deal = (deck) => {
+  const tableauTemplate = [ [1],[2],[3],[4],[5],[6],[7] ];
+  let [ initialStock, initialTableau, initialFoundation ] = [
+    null,
+    [ ],
+    [ [],[],[],[] ]
+  ]
 
+  initialStock = deck;
+  
+  initialTableau = tableauTemplate.map((stackSize)=>{ // making each stack in the tableau
+    const subArray = []
+    for(let j = 1; j <= stackSize[0]; j++){ // adding cards to each stack
+      subArray.unshift( initialStock.shift() )
+    }
+    return subArray;
+  })
+
+  console.log("tableau: ", initialTableau);
+  return [initialStock, initialTableau, initialFoundation]
+}
 
 const GlobalState = props => {
 
-  const [cards, setCards] = useState(assembleDeck);
+  const deck = assembleDeck() // assembles and shuffles deck
+  const [initialStock, initialTableau, initialFoundation] = deal(deck) // returns an array that can be destructured into the starting arraingement
+
+  const [cards, setCards] = useState(assembleDeck());
+  const [stock, setStock] = useState(initialStock);
+  const [tableau, setTableau] = useState(initialTableau);
+  const [foundation, setFoundation] = useState(initialFoundation);
 
   const incrementNumber = (index) => {
     let newDeck = [...cards]; // copy state
     newDeck[index] = { ...newDeck[index], number: newDeck[index].number += 1 };
     setCards(newDeck);
-    console.log("incrementing card number", cards);
+    // console.log("incrementing card number", cards);
+  }
+
+  const flipCard = (index) => {
+    let newDeck = [...cards]; // copy state
+    newDeck[index] = { ...newDeck[index], faceDown: !newDeck[index].faceDown };
+    setCards(newDeck);
   }
 
   return (
     <DeckProvider value={{
       cards: cards,
-      incrementNumber: incrementNumber
+      functions: { incrementNumber, flipCard },
+      stock: stock,
+      tableau: tableau,
+      foundation: foundation
     }}>
       {props.children}
     </DeckProvider>
